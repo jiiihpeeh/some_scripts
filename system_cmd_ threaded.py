@@ -1,4 +1,4 @@
-#Run system command executing list of items in threaded mode 
+#Run system command executing list of items in threaded mode. NOTE: multiprocessing is not needed in this case as it runs a system command.
 
 from subprocess import run
 from glob import glob
