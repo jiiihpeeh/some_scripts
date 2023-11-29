@@ -1,3 +1,5 @@
+//MIT license
+
 import { create } from "zustand"
 
 export enum Theme {
