@@ -15,36 +15,24 @@ type ThemeStore = {
   setIsSystem: (to: boolean) => void
 }
 
-function resolveThemeBasedOnSystem(){
-  const { theme, isSystem, isDarkDefault } = useTheme.getState()
-  if (isSystem) {
-    return  isDarkDefault ? Theme.Dark: Theme.Light
-  }
-  return theme
-}
-
-function themeChanger(theme: Theme) {
+function themeChanger(newTheme: Theme) {
+  const { isSystem, isDarkDefault } = useTheme.getState()
     const root = window.document.documentElement
     root.classList.remove("light", "dark")
-    if (useTheme.getState().isSystem) {
-      const themeSolved = resolveThemeBasedOnSystem()
-      root.classList.add(themeSolved)
+    if (isSystem) {
+      root.classList.add( isDarkDefault ? Theme.Dark: Theme.Light)
       return
     }
-    root.classList.add(theme)
+    root.classList.add(newTheme)
 }
 
 function setUITheme(theme: Theme | null) {
-  if (theme) {
-    localStorage.setItem("ui-theme", theme)
-  } else {
-    localStorage.removeItem("ui-theme")
-  }
+  theme ? localStorage.setItem("ui-theme", theme) : localStorage.removeItem("ui-theme")
 }
+
 function getUITheme() {
   return localStorage.getItem("ui-theme") || ""
 }
-
 
 export const useTheme= create<ThemeStore>()(
     (set, get) => (
@@ -96,9 +84,7 @@ function themeWatcher() {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
     const handleChange = () => {
       useTheme.setState({ isDarkDefault: mediaQuery.matches })
-      if ( isSystem ) {
-        setIsSystem(true)
-      }
+      isSystem ? setIsSystem(true) : null
     }
     mediaQuery.addEventListener("change", handleChange)
     return () => mediaQuery.removeEventListener("change", handleChange)
