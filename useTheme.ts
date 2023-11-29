@@ -53,10 +53,15 @@ export const useTheme= create<ThemeStore>()(
         {
             theme: Theme.Light,
             setTheme: (theme: Theme) => {
-              setUITheme(theme)
-              set({ isSystem: false })
-              themeChanger(theme)                
-              set({ theme: theme })
+              set((state) => {
+                return {
+                  ...state,
+                  isSystem: false,
+                  theme : theme,
+                }
+              })
+              themeChanger(theme)
+              setUITheme(theme) 
             },
             isDarkDefault: window.matchMedia("(prefers-color-scheme: dark)").matches,
             isSystem: true,
