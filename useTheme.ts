@@ -34,37 +34,33 @@ function getUITheme() {
   return localStorage.getItem("ui-theme") || ""
 }
 
-export const useTheme= create<ThemeStore>()(
-    (set, get) => (
-        {
-            theme: Theme.Light,
-            setTheme: (theme: Theme) => {
-              set((state) => {
-                return {
-                  ...state,
-                  isSystem: false,
-                  theme : theme,
-                }
-              })
-              themeChanger(theme)
-              setUITheme(theme) 
-            },
-            isDarkDefault: window.matchMedia("(prefers-color-scheme: dark)").matches,
-            isSystem: true,
-            setIsSystem: (to: boolean) => {
-              const resolvedTheme = get().isDarkDefault ? Theme.Dark : Theme.Light
-              set((state) => {
-                setUITheme(to ? null : resolvedTheme)
-                themeChanger(resolvedTheme)
-                return {
-                  ...state,
-                  isSystem: to,
-                  theme: resolvedTheme,
-                }
-              })
-            }            
+export const useTheme = create<ThemeStore>()(
+  (set, get) => ({
+    theme: Theme.Light,
+    setTheme: (theme: Theme) => {
+      set((state) => ({
+        ...state,
+        isSystem: false,
+        theme,
+      }))
+      themeChanger(theme)
+      setUITheme(theme)
+    },
+    isDarkDefault: window.matchMedia("(prefers-color-scheme: dark)").matches,
+    isSystem: true,
+    setIsSystem: (to: boolean) => {
+      const resolvedTheme = get().isDarkDefault ? Theme.Dark : Theme.Light
+      set((state) => {
+        setUITheme(to ? null : resolvedTheme)
+        themeChanger(resolvedTheme)
+        return {
+          ...state,
+          isSystem: to,
+          theme: resolvedTheme,
         }
-    ),
+      })
+    },
+  })
 )
 
 //eventlistener and initializer for system theme
