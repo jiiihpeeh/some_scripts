@@ -18,11 +18,7 @@ type ThemeStore = {
 function resolveThemeBasedOnSystem(){
   const { theme, isSystem, isDarkDefault } = useTheme.getState()
   if (isSystem) {
-    if ( isDarkDefault) {
-        return Theme.Dark
-    } else { 
-        return Theme.Light
-    }
+    return  isDarkDefault ? Theme.Dark: Theme.Light
   }
   return theme
 }
